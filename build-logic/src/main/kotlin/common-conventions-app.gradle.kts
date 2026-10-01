@@ -192,7 +192,7 @@ configure<com.android.build.api.dsl.ApplicationExtension> {
     ndkVersion = NDK_VERSION
 
     defaultConfig {
-        minSdk = 31
+        minSdk = 30
         versionCode = appVersionCode
         versionName = appVersionName
         targetSdk = 37
