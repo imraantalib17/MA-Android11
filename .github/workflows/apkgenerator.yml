@@ -1,0 +1,37 @@
+name: "APK Generator"
+
+on:
+  workflow_dispatch: # Allows you to manually click "Run workflow" in GitHub
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1 # Fast clone (only gets the latest commit)
+
+      - name: Set Up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '21'
+
+      - name: Set Up Gradle and Cache
+        uses: gradle/actions/setup-gradle@v4
+        # This step automatically saves/restores your Gradle caches securely
+
+      - name: Make Gradle Executable
+        run: chmod +x gradlew
+
+      - name: Build All Release APKs
+        run: ./gradlew assembleRelease --no-daemon
+
+      - name: Upload Finished APKs
+        uses: actions/upload-artifact@v4
+        with:
+          name: Modern-Apps-APKs
+          path: "**/build/outputs/apk/release/*.apk"
+          if-no-files-found: error
